@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, #1f1c2c, #928dab);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container {
+    width: 380px;
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #222;
+  }
+
+  /* INPUT BOX */
+  .input-box {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .input-box input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 15px;
+    background: transparent;
+  }
+
+  .input-box label {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #777;
+    pointer-events: none;
+    transition: 0.3s ease;
+    background: white;
+    padding: 0 5px;
+  }
+
+  /* FLOAT LABEL EFFECT */
+  .input-box input:focus+label,
+  .input-box input:valid+label {
+    top: -8px;
+    font-size: 12px;
+    color: #6c63ff;
+  }
+
+  /* BUTTONS */
+  button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 10px;
+  }
+
+  #signupBtn {
+    background: #6c63ff;
+    color: white;
+    font-weight: bold;
+  }
+
+  .google-btn {
+    background: #db4437;
+    color: white;
+  }
+
+  .github-btn {
+    background: #24292e;
+    color: white;
+  }
+
+  .divider {
+    text-align: center;
+    margin: 15px 0;
+    color: #777;
+  }
+
+  p {
+    text-align: center;
+    margin-top: 15px;
+  }
+
+  a {
+    color: #6c63ff;
+    text-decoration: none;
+  }
+</style>
+
+<body>
+  <div class="container">
+    <h1>Create Account</h1>
+
+    <!-- First Name -->
+    <div class="input-box">
+      <input type="text" id="firstName" required>
+      <label for="firstName">First Name</label>
+    </div>
+
+    <!-- Last Name -->
+    <div class="input-box">
+      <input type="text" id="lastName" required>
+      <label for="lastName">Last Name</label>
+    </div>
+
+    <!-- Email -->
+    <div class="input-box">
+      <input type="email" id="email" required>
+      <label for="email">Email Address</label>
+    </div>
+
+    <!-- Password -->
+    <div class="input-box">
+      <input type="password" id="password" required>
+      <label for="password">Password</label>
+    </div>
+
+    <button id="signupBtn">Sign Up</button>
+
+    <div class="divider">OR</div>
+
+    <button class="google-btn" id="googleBtn" onclick="signInWithGoogle()">Sign in with Google</button>
+    <button class="github-btn" id="githubBtn" onclick="signInWithGithub()">Sign in with GitHub</button>
+
+    <p>Already have an account? <a href="login.html">Login</a></p>
+  </div>
+
+
+
+
+
+
+
+
+
+  <!-- <button onclick="signInWithGoogle()">Sign in with Google</button> -->
+</body>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, GithubAuthProvider } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAl_iqoycSwSaNOJ5CiscsTiWXhg7XFBSQ",
+    authDomain: "introduction-to-firebase-755b8.firebaseapp.com",
+    projectId: "introduction-to-firebase-755b8",
+    storageBucket: "introduction-to-firebase-755b8.firebasestorage.app",
+    messagingSenderId: "44048820667",
+    appId: "1:44048820667:web:44265d68846ca623f33c9e",
+    measurementId: "G-YH1CS4GF9Q"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  const github = new GithubAuthProvider();
+
+
+  const signInWithGoogle = () => {
+    // alert('yyyyy')
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
+      })
+  }
+  window.signInWithGoogle = signInWithGoogle
+
+  const signInWithGithub = () => {
+    // alert('yyyyyyy')
+    signInWithPopup(auth, github)
+    .then((result)=>{
+      const user = result.user;
+      console.log(user);
+    })
+    .catch((error)=>{
+      const errorCode = error.code;
+      const errorMessage = error.message;
+       const email = error.customData.email;
+       const credential = GithubAuthProvider.credentialFromError(error);
+      console.log(errorCode);
+      console.log(errorMessage);
+    })
+  }
+  window.signInWithGithub = signInWithGithub
+</script>
+
+</html>
