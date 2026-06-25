@@ -148,5 +148,142 @@
         </p>
     </div>
 </body>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, GithubAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAl_iqoycSwSaNOJ5CiscsTiWXhg7XFBSQ",
+    authDomain: "introduction-to-firebase-755b8.firebaseapp.com",
+    projectId: "introduction-to-firebase-755b8",
+    storageBucket: "introduction-to-firebase-755b8.firebasestorage.app",
+    messagingSenderId: "44048820667",
+    appId: "1:44048820667:web:44265d68846ca623f33c9e",
+    measurementId: "G-YH1CS4GF9Q"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  const github = new GithubAuthProvider();
+
+
+  const signInWithGoogle = () => {
+    // alert('yyyyy')
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        console.log(errorMessage);
+      })
+  }
+  window.signInWithGoogle = signInWithGoogle
+
+
+  const signInWithGithub = () => {
+    // alert('yyyyyyy')
+    signInWithPopup(auth, github)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        const credential = GithubAuthProvider.credentialFromError(error);
+        console.log(errorCode);
+        console.log(errorMessage);
+      })
+  }
+  window.signInWithGithub = signInWithGithub
+
+  const signUp = () => {
+    const first_name = document.getElementById("firstName").value;
+    const last_name = document.getElementById("lastName").value;
+    const email = document.getElementById("mail").value;
+    const pass_word = document.getElementById("password").value;
+
+    if (
+      first_name === "" ||
+      last_name === "" ||
+      email === "" ||
+      pass_word === ""
+    ) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    createUserWithEmailAndPassword(auth, email, pass_word)
+      .then((userCredential) => {
+        // Signed up 
+        const user = userCredential.user;
+
+        console.log(userCredential);
+
+        alert("Account Created Successfully");
+
+        document.getElementById("firstName").value = "";
+        document.getElementById("lastName").value = "";
+        document.getElementById("mail").value = "";
+        document.getElementById("password").value = "";
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+
+
+  }
+
+  window.signUp = signUp
+
+
+  const signIn = () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      alert("Please fill in all fields");
+      return;
+    }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        console.log(user);
+
+        alert("Login Successful");
+
+        document.getElementById("email").value = "";
+        document.getElementById("password").value = "";
+      })
+      .catch((error) => {
+        console.log(error.code);
+        console.log(error.message);
+
+        alert(error.message);
+      });
+  };
+
+  window.signIn = signIn;
+
+
+
+</script>
 
 </html>
