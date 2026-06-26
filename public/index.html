@@ -241,7 +241,7 @@
     ) {
       alert("Please fill in all fields");
       return;
-    }
+    }       
 
     createUserWithEmailAndPassword(auth, email, pass_word)
       .then((userCredential) => {
@@ -260,6 +260,16 @@
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
+        console.log(errorCode);
+        if(errorCode === 'auth/invalid-email') {
+          alert("Enter a valid email address");
+        } else if (errorCode === 'auth/email-already-in-use') {
+          alert("Email already in use");
+        } else if (errorCode === 'auth/password-does-not-meet-requirements') {
+          alert("Password should be at least 8 characters");
+        } else {
+          alert(errorMessage);
+        }
       });
 
 
