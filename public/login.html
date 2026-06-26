@@ -271,12 +271,22 @@
 
         document.getElementById("email").value = "";
         document.getElementById("password").value = "";
+
+        window.location.href = "dashboard.html";
       })
       .catch((error) => {
-        console.log(error.code);
-        console.log(error.message);
-
-        alert(error.message);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        if (errorCode === 'auth/invalid-email') {
+          alert("Invalid credentials");
+        } else if (errorCode === 'auth/user-not-found') {
+          alert("User not found");
+        } else if (errorCode === 'auth/invalid-credential') {
+          alert("Invalid credentials");
+        } else {
+          alert(errorCode);
+        }
       });
   };
 
