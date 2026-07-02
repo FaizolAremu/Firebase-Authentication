@@ -198,6 +198,7 @@
       .then((result) => {
         const user = result.user
         console.log(user);
+        window.location.href = "dashboard.html";
       })
       .catch((error) => {
         const errorCode = error.code;
